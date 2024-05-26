@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  HomeViewController.swift
 //  CurrencyConverter
 //
 //  Created by Artem Krachulov on 26.05.2024.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class HomeViewController: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
