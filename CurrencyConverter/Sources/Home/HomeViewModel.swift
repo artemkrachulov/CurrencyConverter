@@ -14,6 +14,7 @@ class HomeViewModel {
   private
   let apiClient: Exchangeable
 
+  let statusViewModel: StatusViewModel
   let firstExchangeViewModel: ExchangeViewModel
   let secondExchangeViewModel: ExchangeViewModel
 
@@ -23,8 +24,9 @@ class HomeViewModel {
   private
   var networkCancellables = Set<AnyCancellable>()
 
-  init(firstExchangeViewModel: ExchangeViewModel, secondExchangeViewModel: ExchangeViewModel, apiClient: Exchangeable) {
+  init(statusViewModel: StatusViewModel, firstExchangeViewModel: ExchangeViewModel, secondExchangeViewModel: ExchangeViewModel, apiClient: Exchangeable) {
 
+    self.statusViewModel = statusViewModel
     self.firstExchangeViewModel = firstExchangeViewModel
     self.secondExchangeViewModel = secondExchangeViewModel
     self.apiClient = apiClient
@@ -33,6 +35,7 @@ class HomeViewModel {
 
   static let live: HomeViewModel = {
     HomeViewModel(
+      statusViewModel: .init(),
       firstExchangeViewModel: .init(amount: 100, currency: .EUR),
       secondExchangeViewModel: .init(amount: 100, currency: .EUR),
       apiClient: ApiExchangeClient())
@@ -73,17 +76,19 @@ extension HomeViewModel {
       update.amount.send(amount)
       return
     }
-
+    statusViewModel.isLoading.send(true)
     return apiClient
       .exchange(amount: amount, of: ofCurrency, on: toCurrency)
       .map(\.amount)
       .toResultPublisher()
       .subscribe(on: DispatchQueue.networking)
       .receive(on: DispatchQueue.main)
-      .sink { result in
+      .sink { [weak self] result in
+        self?.statusViewModel.isLoading.send(false)
         switch result {
         case let .success(response):
           update.amount.send(response)
+          self?.statusViewModel.refreshDate.send(Date())
         case let .failure(error):
           fatalError(error.localizedDescription)
         }

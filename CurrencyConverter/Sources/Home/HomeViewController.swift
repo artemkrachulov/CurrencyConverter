@@ -67,12 +67,20 @@ class HomeViewController: UIViewController {
       make.bottom.equalTo(headerView.snp.bottom).offset(-32)
     }
 
+    let statusView = StatusView(viewModel: viewModel.statusViewModel)
+    statusView.translatesAutoresizingMaskIntoConstraints = false
+    view.addSubview(statusView)
+    statusView.snp.makeConstraints { make in
+      make.top.equalTo(headerView.snp.bottom)
+      make.leading.trailing.equalToSuperview()
+    }
+
     let exchangeStackView = UIView()
     exchangeStackView.backgroundColor = .white
     exchangeStackView.translatesAutoresizingMaskIntoConstraints = false
     view.addSubview(exchangeStackView)
     exchangeStackView.snp.makeConstraints { make in
-      make.top.equalTo(headerView.snp.bottom)
+      make.top.equalTo(statusView.snp.bottom)
       make.leading.trailing.equalToSuperview()
     }
 
