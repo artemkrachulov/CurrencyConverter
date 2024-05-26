@@ -9,6 +9,10 @@ packages:
     url: https://github.com/SnapKit/SnapKit.git
     version: 5.0.1
 
+  CombineMoya:
+    url: https://github.com/Moya/Moya.git
+    version: 15.0.0
+
 targets:
   CurrencyConverter:
     type: application
@@ -17,6 +21,7 @@ targets:
 
     dependencies:
       - package: SnapKit
+      - package: CombineMoya
 
     sources:
       - path: CurrencyConverter
