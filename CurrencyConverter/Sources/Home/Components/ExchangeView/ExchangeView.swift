@@ -261,6 +261,8 @@ extension Currency {
       return "$"
     case .UAH:
       return "₴"
+    case .FAKE:
+      return "F"
     }
   }
 }

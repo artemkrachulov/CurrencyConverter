@@ -11,12 +11,20 @@ import Combine
 final
 class HomeViewModel {
 
+  // MARK: I/O
+
+  enum Output {
+    case showError(String)
+    case hideError
+  }
+
   private
   let apiClient: Exchangeable
 
   let statusViewModel: StatusViewModel
   let firstExchangeViewModel: ExchangeViewModel
   let secondExchangeViewModel: ExchangeViewModel
+  var error: PassthroughSubject<String?, Never> = .init()
 
   private
   var cancellables = Set<AnyCancellable>()
@@ -60,12 +68,28 @@ class HomeViewModel {
           update: firstExchangeViewModel)
       }.store(in: &cancellables)
   }
+
+  func transform() -> AnyPublisher<Output, Never> {
+
+    let errorAction = error
+      .map { error in
+        if let error {
+          return Output.showError(error)
+        } else {
+          return Output.hideError
+        }
+      }
+
+    return errorAction.eraseToAnyPublisher()
+  }
 }
 
 extension HomeViewModel {
   /// Shared refresh currency publisher
   private
   func exchange(amount: Double, of ofCurrency: Currency, update: Updatable) {
+
+    error.send(nil)
 
     networkCancellables.forEach { $0.cancel() }
     networkCancellables = []
@@ -90,7 +114,7 @@ extension HomeViewModel {
           update.amount.send(response)
           self?.statusViewModel.refreshDate.send(Date())
         case let .failure(error):
-          fatalError(error.localizedDescription)
+          self?.error.send(error.localizedDescription)
         }
       }.store(in: &networkCancellables)
   }

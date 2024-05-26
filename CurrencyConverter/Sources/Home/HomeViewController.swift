@@ -6,21 +6,35 @@
 //
 
 import UIKit
+import Combine
 
 final
 class HomeViewController: UIViewController {
 
-  private lazy var titleLabel: UILabel = {
+  private
+  lazy var titleLabel: UILabel = {
     var label = UILabel()
     label.text = "My title"
     return label
   }()
 
-  private lazy var descLabel: UILabel = {
+  private
+  lazy var descLabel: UILabel = {
     var label = UILabel()
     label.text = "My desc"
     return label
   }()
+
+  private
+  lazy var exchangeStackView: UIView = {
+    let view = UIView()
+    view.backgroundColor = .white
+    view.translatesAutoresizingMaskIntoConstraints = false
+    return view
+  }()
+
+  private
+  var cancellables = Set<AnyCancellable>()
 
   var viewModel: HomeViewModel
 
@@ -37,6 +51,7 @@ class HomeViewController: UIViewController {
     super.viewDidLoad()
 
     setupUI()
+    setupBindings()
   }
 
   private
@@ -75,9 +90,6 @@ class HomeViewController: UIViewController {
       make.leading.trailing.equalToSuperview()
     }
 
-    let exchangeStackView = UIView()
-    exchangeStackView.backgroundColor = .white
-    exchangeStackView.translatesAutoresizingMaskIntoConstraints = false
     view.addSubview(exchangeStackView)
     exchangeStackView.snp.makeConstraints { make in
       make.top.equalTo(statusView.snp.bottom)
@@ -93,6 +105,39 @@ class HomeViewController: UIViewController {
     exchangeStackView.addSubview(exchangeStack)
     exchangeStack.snp.makeConstraints { make in
       make.edges.equalTo(exchangeStackView)
+    }
+  }
+
+  private
+  func setupBindings() {
+    viewModel
+      .transform()
+      .sink { [unowned self] event in
+        switch event {
+        case let .showError(error):
+          showError(error)
+
+        case .hideError:
+          errorView?.removeFromSuperview()
+        }
+      }.store(in: &cancellables)
+  }
+
+  private
+  var errorView: ErrorView?
+
+  private func showError(_ error: String) {
+    if let errorView {
+      errorView.error = error
+    } else {
+      let errorView = ErrorView(error: error)
+      errorView.translatesAutoresizingMaskIntoConstraints = false
+      view.addSubview(errorView)
+      errorView.snp.makeConstraints { make in
+        make.left.right.equalToSuperview()
+        make.top.equalTo(exchangeStackView.snp.bottom)
+      }
+      self.errorView = errorView
     }
   }
 }

@@ -14,6 +14,9 @@ enum Currency: Int, CaseIterable {
   case EUR = 0
   case USD
   case UAH
+
+  // Error view test purpose
+  case FAKE
 }
 
 extension Currency {
@@ -26,6 +29,8 @@ extension Currency {
       return "USD"
     case .UAH:
       return "UAH"
+    case .FAKE:
+      return "FAKE"
     }
   }
 }
