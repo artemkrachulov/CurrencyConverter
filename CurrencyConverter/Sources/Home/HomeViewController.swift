@@ -14,5 +14,10 @@ class HomeViewController: UIViewController {
     super.viewDidLoad()
 
     view.backgroundColor = .white
+
+    let exchangeView = ExchangeView(viewModel: .init(amount: 100, currency: .EUR), valueValidator: DoubleValueValidator())
+
+    exchangeView.frame = CGRect(origin: .zero, size: CGSize(width: 300, height: 100))
+    view.addSubview(exchangeView)
   }
 }
