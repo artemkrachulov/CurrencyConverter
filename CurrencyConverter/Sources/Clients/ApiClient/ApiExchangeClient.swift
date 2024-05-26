@@ -15,6 +15,10 @@ protocol Exchangeable {
   func exchange(amount: Double, of ofCurrency: Currency, on onCurrency: Currency) -> AnyPublisher<ExchangeResponse, ApiError>
 }
 
+extension DispatchQueue {
+  static let networking = DispatchQueue(label: "networking", qos: .utility)
+}
+
 final
 class ApiExchangeClient: Exchangeable {
 
@@ -30,5 +34,4 @@ class ApiExchangeClient: Exchangeable {
       }
       .eraseToAnyPublisher()
   }
-
 }
