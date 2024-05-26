@@ -1,0 +1,36 @@
+name: CurrencyConverter 
+options:
+  bundleIdPrefix: com.artem.krachulov
+  deploymentTarget:
+    iOS: "14.0"
+
+targets:
+  CurrencyConverter:
+    type: application
+    platform: iOS
+    deploymentTarget: "14.0"
+
+    sources:
+      - path: CurrencyConverter
+
+    postCompileScripts:
+      - name: ⚠️ SwiftLint
+        runOnlyWhenInstalling: false
+        shell: /bin/sh
+        script: |
+          if command -v swiftlint >/dev/null 2>&1
+            then
+              swiftlint
+            else
+              echo "warning: `swiftlint` command not found - See https://github.com/realm/SwiftLint#installation for installation instructions."
+          fi
+        basedOnDependencyAnalysis: false
+      - name: 🛠 SwiftGen
+        runOnlyWhenInstalling: false
+        shell: /bin/sh
+        script: |
+          if which swiftgen >/dev/null; then
+            swiftgen
+          else
+            echo "warning: SwiftGen not installed, download it from https://github.com/SwiftGen/SwiftGen"
+          fi
