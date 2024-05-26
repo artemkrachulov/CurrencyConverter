@@ -4,11 +4,19 @@ options:
   deploymentTarget:
     iOS: "14.0"
 
+packages:
+  SnapKit:
+    url: https://github.com/SnapKit/SnapKit.git
+    version: 5.0.1
+
 targets:
   CurrencyConverter:
     type: application
     platform: iOS
     deploymentTarget: "14.0"
+
+    dependencies:
+      - package: SnapKit
 
     sources:
       - path: CurrencyConverter
