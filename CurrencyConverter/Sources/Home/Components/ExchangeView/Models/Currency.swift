@@ -15,3 +15,17 @@ enum Currency: Int, CaseIterable {
   case USD
   case UAH
 }
+
+extension Currency {
+
+  var code: String {
+    switch self {
+    case .EUR:
+      return "EUR"
+    case .USD:
+      return "USD"
+    case .UAH:
+      return "UAH"
+    }
+  }
+}

@@ -253,17 +253,6 @@ extension Optional where Wrapped == String {
 fileprivate
 extension Currency {
 
-  var code: String {
-    switch self {
-    case .EUR:
-      return "EUR"
-    case .USD:
-      return "USD"
-    case .UAH:
-      return "UAH"
-    }
-  }
-
   var symbol: String {
     switch self {
     case .EUR:
