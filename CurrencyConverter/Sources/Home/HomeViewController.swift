@@ -104,10 +104,26 @@ class HomeViewController: UIViewController {
       make.leading.trailing.equalToSuperview()
     }
 
+    let dividerView = UIView()
+    dividerView.translatesAutoresizingMaskIntoConstraints = false
+    dividerView.backgroundColor = Asset.background.color
+    dividerView.snp.makeConstraints { make in
+      make.height.equalTo(1)
+    }
+
+    let dividerContainerView = UIView()
+    dividerContainerView.addSubview(dividerView)
+    dividerView.snp.makeConstraints { make in
+      make.top.bottom.equalToSuperview()
+      make.leading.trailing.equalToSuperview().inset(16)
+    }
+
     let exchangeStack = UIStackView(arrangedSubviews: [
       ExchangeView(viewModel: viewModel.firstExchangeViewModel),
+      dividerContainerView,
       ExchangeView(viewModel: viewModel.secondExchangeViewModel)
     ])
+    exchangeStack.spacing = 8
     exchangeStack.axis = .vertical
     exchangeStackView.translatesAutoresizingMaskIntoConstraints = false
     exchangeStackView.addSubview(exchangeStack)

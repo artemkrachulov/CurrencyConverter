@@ -15,6 +15,8 @@ class ExchangeView: UIView {
   private
   lazy var codeLabel: UILabel = {
     let label = UILabel()
+    label.font = .systemFont(ofSize: 24, weight: .light)
+    label.textColor = .white
     return label
   }()
 
@@ -22,6 +24,7 @@ class ExchangeView: UIView {
   lazy var selectIcon: UIImageView = {
     let view = UIImageView(image: UIImage(systemName: "chevron.down"))
     view.translatesAutoresizingMaskIntoConstraints = false
+    view.tintColor = .white
     view.snp.makeConstraints { make in
       make.width.height.equalTo(14)
     }
@@ -34,10 +37,20 @@ class ExchangeView: UIView {
     label.setContentHuggingPriority(.init(200), for: .horizontal)
     label.textAlignment = .right
     label.translatesAutoresizingMaskIntoConstraints = false
+    label.font = .systemFont(ofSize: 42, weight: .light)
+    label.textColor = Asset.primary.color
     label.snp.makeConstraints { make in
       make.width.greaterThanOrEqualTo(30)
     }
     return label
+  }()
+
+  private
+  lazy var selectionView: UIView = {
+    let view = CorneredView()
+    view.translatesAutoresizingMaskIntoConstraints = false
+    view.backgroundColor = Asset.primary.color
+    return view
   }()
 
   private
@@ -65,7 +78,6 @@ class ExchangeView: UIView {
     textField.inputView = pickerView
     textField.inputAccessoryView = toolBar
     textField.isHidden = true
-
     return textField
   }()
 
@@ -83,6 +95,8 @@ class ExchangeView: UIView {
     textField.inputAccessoryView = toolBar
     textField.autocorrectionType = .no
     textField.autocapitalizationType = .none
+    textField.font = .systemFont(ofSize: 42, weight: .light)
+    textField.textColor = Asset.primary.color
     return textField
   }()
 
@@ -120,15 +134,18 @@ class ExchangeView: UIView {
       codeLabel,
       selectIcon
     ])
+    selectionStack.alignment = .center
     selectionStack.spacing = 8
 
-    let selectionView = UIView()
     selectionView.addSubview(selectionStack)
     selectionView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.presentPicker(_:))))
-    selectionView.translatesAutoresizingMaskIntoConstraints = false
+    selectionView.snp.makeConstraints { make in
+      make.height.equalTo(80)
+    }
+
     selectionStack.snp.makeConstraints { make in
-      make.edges.equalTo(selectionView)
-        .inset(UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20))
+      make.leading.trailing.equalToSuperview().inset(16)
+      make.centerY.equalToSuperview()
     }
 
     let stack = UIStackView(arrangedSubviews: [
@@ -142,7 +159,9 @@ class ExchangeView: UIView {
     addSubview(stack)
     stack.translatesAutoresizingMaskIntoConstraints = false
     stack.snp.makeConstraints { make in
-      make.edges.equalTo(self)
+      make.leading.equalToSuperview()
+      make.trailing.equalToSuperview().inset(16)
+      make.top.bottom.equalToSuperview().inset(16)
     }
 
     addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.presentNumPad(_:))))
@@ -152,7 +171,10 @@ class ExchangeView: UIView {
 
     viewModel.isActive
       .sink { [unowned self] isActive in
-        textField.textColor = isActive ? .blue : .black
+        let color = isActive ? Asset.accentColor.color : Asset.primary.color
+        selectionView.backgroundColor = color
+        symbolLabel.textColor = color
+        textField.textColor = color
       }.store(in: &cancellables)
 
     viewModel
