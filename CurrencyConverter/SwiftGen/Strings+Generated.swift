@@ -10,6 +10,13 @@ import Foundation
 // swiftlint:disable explicit_type_interface function_parameter_count identifier_name line_length
 // swiftlint:disable nesting type_body_length type_name vertical_whitespace_opening_braces
 internal enum L10n {
+  /// Simple one-page iOS application that allows users to convert currencies using real-time exchange rates.
+  internal static let homeDesc = L10n.tr("Localizable", "home_desc", fallback: "Simple one-page iOS application that allows users to convert currencies using real-time exchange rates.")
+  /// Localizable.strings
+  ///   CurrencyConverter
+  /// 
+  ///   Created by Artem Krachulov on 26.05.2024.
+  internal static let homeTitle = L10n.tr("Localizable", "home_title", fallback: "Currency Converter")
 }
 // swiftlint:enable explicit_type_interface function_parameter_count identifier_name line_length
 // swiftlint:enable nesting type_body_length type_name vertical_whitespace_opening_braces

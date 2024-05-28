@@ -14,14 +14,20 @@ class HomeViewController: UIViewController {
   private
   lazy var titleLabel: UILabel = {
     var label = UILabel()
-    label.text = "My title"
+    label.text = L10n.homeTitle
+    label.font = .systemFont(ofSize: 32, weight: .bold)
+    label.textColor = Asset.primary.color
     return label
   }()
 
   private
   lazy var descLabel: UILabel = {
     var label = UILabel()
-    label.text = "My desc"
+    label.text = L10n.homeDesc
+    label.textAlignment = .center
+    label.numberOfLines = 0
+    label.font = .systemFont(ofSize: 14, weight: .regular)
+    label.textColor = Asset.secondary.color
     return label
   }()
 
@@ -57,10 +63,11 @@ class HomeViewController: UIViewController {
   private
   func setupUI() {
 
-    self.view.backgroundColor = .white
+    self.view.backgroundColor = Asset.background.color
 
     let headerView = UIView()
     headerView.translatesAutoresizingMaskIntoConstraints = false
+    headerView.backgroundColor = .white
     view.addSubview(headerView)
     headerView.snp.makeConstraints { make in
       make.top.equalTo(view.snp.top)
@@ -71,14 +78,15 @@ class HomeViewController: UIViewController {
       titleLabel,
       descLabel
     ])
+    headerStack.spacing = 16
     headerStack.axis = .vertical
     headerStack.alignment = .center
     headerStack.translatesAutoresizingMaskIntoConstraints = false
     headerView.addSubview(headerStack)
     headerStack.snp.makeConstraints { make in
       make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(32)
-      make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading)
-      make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing)
+      make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading).inset(32)
+      make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing).inset(32)
       make.bottom.equalTo(headerView.snp.bottom).offset(-32)
     }
 
