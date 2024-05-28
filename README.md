@@ -2,6 +2,12 @@
 
 Latest exchange rates with this awesome application. 
 
+## Spent time
+
+- Artwork ~ 2 hours
+- Project setup ~ 3 hours (Never installed xcodegen. Wanted to try. Usually work with [tuist](https://tuist.io))
+- Development ~ 8 hours 
+
 ## Getting Started
 
 To get things running:
