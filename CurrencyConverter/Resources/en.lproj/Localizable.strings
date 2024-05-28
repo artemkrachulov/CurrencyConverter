@@ -8,3 +8,5 @@
 
 "home_title" = "Currency Converter";
 "home_desc" = "Simple one-page iOS application that allows users to convert currencies using real-time exchange rates.";
+
+"refresh_at" = "Last refreshed at %@";

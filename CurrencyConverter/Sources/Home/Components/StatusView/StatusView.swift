@@ -15,6 +15,8 @@ class StatusView: UIView {
   lazy var refreshDateLabel: UILabel = {
     let label = UILabel()
     label.text = "---"
+    label.textColor = Asset.primary.color
+    label.font = .systemFont(ofSize: 12, weight: .regular)
     return label
   }()
 
@@ -23,13 +25,14 @@ class StatusView: UIView {
     let activityIndicator = UIActivityIndicatorView()
     activityIndicator.hidesWhenStopped = true
     activityIndicator.style = .medium
-    activityIndicator.color = .white
+    activityIndicator.color = Asset.primary.color
     return activityIndicator
   }()
 
   private
   lazy var clockView: UIImageView = {
     let view = UIImageView(image: UIImage(systemName: "clock.arrow.circlepath"))
+    view.tintColor = Asset.primary.color
     return view
   }()
 
@@ -81,7 +84,7 @@ class StatusView: UIView {
     addSubview(vStack)
 
     vStack.snp.makeConstraints { make in
-      make.top.bottom.equalToSuperview().inset(8)
+      make.top.bottom.equalToSuperview().inset(12)
       make.leading.trailing.equalToSuperview()
     }
   }
@@ -100,7 +103,7 @@ class StatusView: UIView {
           clockView.isHidden = isLoading
 
         case let .setRefreshDate(date):
-          refreshDateLabel.text = "Last refreshed at \(date)"
+          refreshDateLabel.text = L10n.refreshAt(date)
         }
       }.store(in: &cancellables)
   }

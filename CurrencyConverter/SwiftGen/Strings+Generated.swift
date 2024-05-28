@@ -17,6 +17,10 @@ internal enum L10n {
   /// 
   ///   Created by Artem Krachulov on 26.05.2024.
   internal static let homeTitle = L10n.tr("Localizable", "home_title", fallback: "Currency Converter")
+  /// Last refreshed at %@
+  internal static func refreshAt(_ p1: Any) -> String {
+    return L10n.tr("Localizable", "refresh_at", String(describing: p1), fallback: "Last refreshed at %@")
+  }
 }
 // swiftlint:enable explicit_type_interface function_parameter_count identifier_name line_length
 // swiftlint:enable nesting type_body_length type_name vertical_whitespace_opening_braces
