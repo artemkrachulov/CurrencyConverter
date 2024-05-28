@@ -82,6 +82,32 @@ class HomeViewModel {
 
     return errorAction.eraseToAnyPublisher()
   }
+
+  // MARK: Timer
+  // To save network recourses run timer only when currencies are different
+
+  private
+  var timer: Timer?
+
+  private
+  func startRefreshTimer() {
+    let timer = Timer(timeInterval: 10.0, target: self, selector: #selector(fireTimer), userInfo: nil, repeats: true)
+    RunLoop.current.add(timer, forMode: .common)
+    self.timer = timer
+  }
+
+  private
+  func cancelRefreshTimer() {
+    timer?.invalidate()
+    timer = nil
+  }
+
+  @objc private
+  func fireTimer(timer: Timer) {
+    exchange(
+      amount: firstExchangeViewModel.amount.value, of: firstExchangeViewModel.currency.value,
+      update: secondExchangeViewModel)
+  }
 }
 
 extension HomeViewModel {
@@ -89,6 +115,7 @@ extension HomeViewModel {
   private
   func exchange(amount: Double, of ofCurrency: Currency, update: Updatable) {
 
+    cancelRefreshTimer()
     error.send(nil)
 
     networkCancellables.forEach { $0.cancel() }
@@ -113,6 +140,7 @@ extension HomeViewModel {
         case let .success(response):
           update.amount.send(response)
           self?.statusViewModel.refreshDate.send(Date())
+          self?.startRefreshTimer()
         case let .failure(error):
           self?.error.send(error.localizedDescription)
         }
