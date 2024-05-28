@@ -20,6 +20,7 @@ class ErrorView: UIView {
     label.text = error
     label.numberOfLines = 0
     label.textColor = .white
+    label.font = .systemFont(ofSize: 12, weight: .regular)
     label.textAlignment = .center
     label.translatesAutoresizingMaskIntoConstraints = false
     return label
@@ -37,7 +38,7 @@ class ErrorView: UIView {
   }
 
   private func setupUI() {
-    backgroundColor = .red
+    backgroundColor = Asset.alert.color
 
     addSubview(label)
     label.snp.makeConstraints { make in
