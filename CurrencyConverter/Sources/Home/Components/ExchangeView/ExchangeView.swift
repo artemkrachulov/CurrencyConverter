@@ -9,6 +9,10 @@ import UIKit
 import SnapKit
 import Combine
 
+// We want to process formatting only for specific text field
+private
+let amountTextFieldTag = 757 // ✈️
+
 final
 class ExchangeView: UIView {
 
@@ -65,7 +69,7 @@ class ExchangeView: UIView {
   private
   lazy var pickerTextField: UITextField = {
     let textField = UITextField()
-
+    textField.delegate = self
     let toolBar = ActionToolbar { [unowned self] in
       let index = pickerView.selectedRow(inComponent: 0)
       let currency = Currency(rawValue: index)!
@@ -85,6 +89,7 @@ class ExchangeView: UIView {
   lazy var textField: UITextField = {
     let textField = HitlessTextField()
     textField.delegate = self
+    textField.tag = amountTextFieldTag
     textField.keyboardType = .decimalPad
     let toolBar = ActionToolbar { [unowned self] in
       endEditing(true)
@@ -208,17 +213,27 @@ class ExchangeView: UIView {
 extension ExchangeView: UITextFieldDelegate {
 
   func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+
+    viewModel.input.send(.setActive(true))
+
+    guard isAmountTextFeld(textField) else {
+      return true
+    }
+
     shouldClear = true
 
     DispatchQueue.main.async {
       let position = textField.endOfDocument
       textField.selectedTextRange = textField.textRange(from: position, to: position)
     }
-    viewModel.input.send(.setActive(true))
     return true
   }
 
   func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+
+    guard isAmountTextFeld(textField) else {
+      return true
+    }
 
     if shouldClear {
       if valueValidator.validate(string) {
@@ -236,8 +251,13 @@ extension ExchangeView: UITextFieldDelegate {
   }
 
   func textFieldDidEndEditing(_ textField: UITextField) {
-    viewModel.input.send(.textFieldEndEditing(amount: textField.text.doubleOrZero))
+
     viewModel.input.send(.setActive(false))
+
+    guard isAmountTextFeld(textField) else {
+      return
+    }
+    viewModel.input.send(.textFieldEndEditing(amount: textField.text.doubleOrZero))
   }
 }
 
@@ -287,4 +307,9 @@ extension Currency {
       return "F"
     }
   }
+}
+
+private
+func isAmountTextFeld(_ textField: UITextField) -> Bool {
+  textField.tag == amountTextFieldTag
 }
