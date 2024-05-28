@@ -16,7 +16,7 @@ class StatusView: UIView {
     let label = UILabel()
     label.text = "---"
     label.textColor = Asset.primary.color
-    label.font = .systemFont(ofSize: 12, weight: .regular)
+    label.font = AppFont.text
     return label
   }()
 
@@ -31,7 +31,7 @@ class StatusView: UIView {
 
   private
   lazy var clockView: UIImageView = {
-    let view = UIImageView(image: UIImage(systemName: "clock.arrow.circlepath"))
+    let view = UIImageView(image: UIImage(systemName: AppIcon.clock))
     view.tintColor = Asset.primary.color
     return view
   }()
@@ -58,7 +58,7 @@ class StatusView: UIView {
     let activityContainerView = UIView()
     activityContainerView.translatesAutoresizingMaskIntoConstraints = false
     activityContainerView.snp.makeConstraints { make in
-      make.width.height.equalTo(18)
+      make.width.height.equalTo(Layout.iconSize)
     }
 
     [activityIndicatorView, clockView]
@@ -74,7 +74,7 @@ class StatusView: UIView {
       activityContainerView,
       refreshDateLabel
     ])
-    hStack.spacing = 4
+    hStack.spacing = GridLayout.u
     hStack.axis = .horizontal
 
     let vStack = UIStackView(arrangedSubviews: [hStack])
@@ -84,7 +84,7 @@ class StatusView: UIView {
     addSubview(vStack)
 
     vStack.snp.makeConstraints { make in
-      make.top.bottom.equalToSuperview().inset(12)
+      make.top.bottom.equalToSuperview().inset(GridLayout.u3)
       make.leading.trailing.equalToSuperview()
     }
   }

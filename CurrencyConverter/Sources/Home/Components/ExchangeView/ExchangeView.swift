@@ -19,18 +19,18 @@ class ExchangeView: UIView {
   private
   lazy var codeLabel: UILabel = {
     let label = UILabel()
-    label.font = .systemFont(ofSize: 24, weight: .light)
+    label.font =  AppFont.code
     label.textColor = .white
     return label
   }()
 
   private
   lazy var selectIcon: UIImageView = {
-    let view = UIImageView(image: UIImage(systemName: "chevron.down"))
+    let view = UIImageView(image: UIImage(systemName: AppIcon.chevron))
     view.translatesAutoresizingMaskIntoConstraints = false
     view.tintColor = .white
     view.snp.makeConstraints { make in
-      make.width.height.equalTo(14)
+      make.width.height.equalTo(Layout.iconSize)
     }
     return view
   }()
@@ -41,11 +41,8 @@ class ExchangeView: UIView {
     label.setContentHuggingPriority(.init(200), for: .horizontal)
     label.textAlignment = .right
     label.translatesAutoresizingMaskIntoConstraints = false
-    label.font = .systemFont(ofSize: 42, weight: .light)
+    label.font = AppFont.amount
     label.textColor = Asset.primary.color
-    label.snp.makeConstraints { make in
-      make.width.greaterThanOrEqualTo(30)
-    }
     return label
   }()
 
@@ -98,7 +95,7 @@ class ExchangeView: UIView {
     textField.inputAccessoryView = toolBar
     textField.autocorrectionType = .no
     textField.autocapitalizationType = .none
-    textField.font = .systemFont(ofSize: 42, weight: .light)
+    textField.font =  AppFont.amount
     textField.textColor = Asset.primary.color
     return textField
   }()
@@ -138,16 +135,16 @@ class ExchangeView: UIView {
       selectIcon
     ])
     selectionStack.alignment = .center
-    selectionStack.spacing = 8
+    selectionStack.spacing = GridLayout.u2
 
     selectionView.addSubview(selectionStack)
     selectionView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.presentPicker(_:))))
     selectionView.snp.makeConstraints { make in
-      make.height.equalTo(80)
+      make.height.equalTo(Layout.selectionHeight)
     }
 
     selectionStack.snp.makeConstraints { make in
-      make.leading.trailing.equalToSuperview().inset(16)
+      make.leading.trailing.equalToSuperview().inset(AppLayout.edgeInset)
       make.centerY.equalToSuperview()
     }
 
@@ -156,15 +153,15 @@ class ExchangeView: UIView {
       symbolLabel,
       textField
     ])
-    stack.spacing = 8
+    stack.spacing = GridLayout.u2
     stack.alignment = .center
 
     addSubview(stack)
     stack.translatesAutoresizingMaskIntoConstraints = false
     stack.snp.makeConstraints { make in
       make.leading.equalToSuperview()
-      make.trailing.equalToSuperview().inset(16)
-      make.top.bottom.equalToSuperview().inset(16)
+      make.trailing.equalToSuperview().inset(AppLayout.edgeInset)
+      make.top.bottom.equalToSuperview().inset(AppLayout.edgeInset)
     }
 
     addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.presentNumPad(_:))))

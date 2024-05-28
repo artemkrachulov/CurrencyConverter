@@ -15,7 +15,7 @@ class HomeViewController: UIViewController {
   lazy var titleLabel: UILabel = {
     var label = UILabel()
     label.text = L10n.homeTitle
-    label.font = .systemFont(ofSize: 32, weight: .bold)
+    label.font = AppFont.title
     label.textColor = Asset.primary.color
     return label
   }()
@@ -26,7 +26,7 @@ class HomeViewController: UIViewController {
     label.text = L10n.homeDesc
     label.textAlignment = .center
     label.numberOfLines = 0
-    label.font = .systemFont(ofSize: 14, weight: .regular)
+    label.font = AppFont.headline
     label.textColor = Asset.secondary.color
     return label
   }()
@@ -78,16 +78,17 @@ class HomeViewController: UIViewController {
       titleLabel,
       descLabel
     ])
-    headerStack.spacing = 16
+    headerStack.spacing = GridLayout.u4
     headerStack.axis = .vertical
     headerStack.alignment = .center
     headerStack.translatesAutoresizingMaskIntoConstraints = false
     headerView.addSubview(headerStack)
     headerStack.snp.makeConstraints { make in
-      make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(32)
-      make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading).inset(32)
-      make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing).inset(32)
-      make.bottom.equalTo(headerView.snp.bottom).offset(-32)
+      let inset = AppLayout.edgeInset * 2
+      make.top.equalTo(view.safeAreaLayoutGuide.snp.top).inset(inset)
+      make.leading.equalTo(view.safeAreaLayoutGuide.snp.leading).inset(inset)
+      make.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing).inset(inset)
+      make.bottom.equalTo(headerView.snp.bottom).inset(inset)
     }
 
     let statusView = StatusView(viewModel: viewModel.statusViewModel)
@@ -108,14 +109,14 @@ class HomeViewController: UIViewController {
     dividerView.translatesAutoresizingMaskIntoConstraints = false
     dividerView.backgroundColor = Asset.background.color
     dividerView.snp.makeConstraints { make in
-      make.height.equalTo(1)
+      make.height.equalTo(Layout.divider)
     }
 
     let dividerContainerView = UIView()
     dividerContainerView.addSubview(dividerView)
     dividerView.snp.makeConstraints { make in
       make.top.bottom.equalToSuperview()
-      make.leading.trailing.equalToSuperview().inset(16)
+      make.leading.trailing.equalToSuperview().inset(AppLayout.edgeInset)
     }
 
     let exchangeStack = UIStackView(arrangedSubviews: [
@@ -123,7 +124,7 @@ class HomeViewController: UIViewController {
       dividerContainerView,
       ExchangeView(viewModel: viewModel.secondExchangeViewModel)
     ])
-    exchangeStack.spacing = 8
+    exchangeStack.spacing = GridLayout.u2
     exchangeStack.axis = .vertical
     exchangeStackView.translatesAutoresizingMaskIntoConstraints = false
     exchangeStackView.addSubview(exchangeStack)

@@ -20,7 +20,7 @@ class ErrorView: UIView {
     label.text = error
     label.numberOfLines = 0
     label.textColor = .white
-    label.font = .systemFont(ofSize: 12, weight: .regular)
+    label.font = AppFont.text
     label.textAlignment = .center
     label.translatesAutoresizingMaskIntoConstraints = false
     return label
@@ -42,7 +42,7 @@ class ErrorView: UIView {
 
     addSubview(label)
     label.snp.makeConstraints { make in
-      make.edges.equalToSuperview().inset(8)
+      make.edges.equalToSuperview().inset(GridLayout.u2)
     }
   }
 }
