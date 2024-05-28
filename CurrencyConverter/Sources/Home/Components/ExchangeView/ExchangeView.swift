@@ -93,8 +93,6 @@ class ExchangeView: UIView {
     textField.keyboardType = .decimalPad
     let toolBar = ActionToolbar { [unowned self] in
       endEditing(true)
-    } onCancel: { [unowned self] in
-      endEditing(true)
     }
     toolBar.translatesAutoresizingMaskIntoConstraints = false
     textField.inputAccessoryView = toolBar

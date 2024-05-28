@@ -10,10 +10,13 @@ import UIKit
 final
 class ActionToolbar: UIToolbar {
 
-  var onDone: (() -> Void)?
-  var onCancel: () -> Void
+  private
+  var onDone: () -> Void
 
-  init(onDone: @escaping () -> Void, onCancel: @escaping () -> Void) {
+  private
+  var onCancel: (() -> Void)?
+
+  init(onDone: @escaping () -> Void, onCancel: (() -> Void)? = nil) {
     self.onDone = onDone
     self.onCancel = onCancel
     super.init(frame: .zero)
@@ -31,19 +34,27 @@ class ActionToolbar: UIToolbar {
     tintColor = .black
     sizeToFit()
 
-    let doneButton = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(self.doneTapped))
-    let spaceButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-    let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(self.cancelTapped))
+    var items = [
+      UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+      UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(self.doneTapped))
+    ]
 
-    setItems([cancelButton, spaceButton, doneButton], animated: false)
+    if onCancel?() != nil {
+      items.insert(
+        UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(self.cancelTapped)), at: 0
+      )
+    }
+
+    setItems(items, animated: false)
+
     isUserInteractionEnabled = true
   }
 
   @objc private func doneTapped() {
-    onDone?()
+    onDone()
   }
 
   @objc private func cancelTapped() {
-    onCancel()
+    onCancel?()
   }
 }
