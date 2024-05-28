@@ -7,6 +7,13 @@
 
 import Foundation
 
-enum ApiError: Error {
+enum ApiError: Error, LocalizedError {
   case generic(String)
+}
+
+extension ApiError {
+
+  public var errorDescription: String? {
+    return L10n.genericError
+  }
 }

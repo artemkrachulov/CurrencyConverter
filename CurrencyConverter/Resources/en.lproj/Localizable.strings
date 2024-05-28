@@ -10,3 +10,4 @@
 "home_desc" = "Simple one-page iOS application that allows users to convert currencies using real-time exchange rates.";
 
 "refresh_at" = "Last refreshed at %@";
+"generic_error" = "Oops...\nSomething went wrong. Try later.";
