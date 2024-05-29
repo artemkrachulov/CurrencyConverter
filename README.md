@@ -2,6 +2,8 @@
 
 Latest exchange rates with this awesome application. 
 
+![Home-selected](https://github.com/artemkrachulov/CurrencyConverter/assets/7997760/32ff8366-f54c-4b2e-9a97-d9495acc25a8)
+
 ## Spent time
 
 - Artwork ~ 2 hours
